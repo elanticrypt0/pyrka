@@ -1,7 +1,14 @@
-# Pytuka
+# Pyrka
 
 # Docker commands
 
+## Install docker on deb
+
+```bash
+
+sudo apt install docker.io -y
+
+```
 
 ```bash
 # Construir la imagen
