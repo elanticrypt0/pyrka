@@ -7,8 +7,14 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar dependencias de Python
+# Copiar requirements.txt primero
 COPY requirements.txt .
+
+# Instalar dependencias de Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# El código se montará como volumen
+# No necesitamos copiar todo el código aquí porque lo montaremos como volumen
+# pero creamos la estructura de directorios necesaria
+RUN mkdir -p /app/app
+
+EXPOSE 5000

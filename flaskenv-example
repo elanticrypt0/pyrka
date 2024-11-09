@@ -1,0 +1,32 @@
+# Modo Debug/Desarrollo
+# Windows
+set FLASK_APP=run.py
+set FLASK_ENV=development
+set FLASK_DEBUG=1
+flask run
+
+# Linux/Mac
+export FLASK_APP=run.py
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+flask run
+
+# Modo Producción
+# Windows
+set FLASK_APP=run.py
+set FLASK_ENV=production
+set FLASK_DEBUG=0
+# Opcionalmente puedes especificar el host y puerto
+flask run --host=0.0.0.0 --port=8000
+
+# Linux/Mac
+export FLASK_APP=run.py
+export FLASK_ENV=production
+export FLASK_DEBUG=0
+flask run --host=0.0.0.0 --port=8000
+
+# Alternativa usando gunicorn (recomendado para producción - solo Linux/Mac)
+gunicorn -w 4 -b 0.0.0.0:8000 "run:app"
+
+# Usando waitress (alternativa para Windows en producción)
+waitress-serve --host=0.0.0.0 --port=8000 run:app

@@ -1,16 +1,19 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  web:
+    build: 
+      context: ./app
+      dockerfile: ../Dockerfile
     ports:
-      - "$APP_PORT:8000"
+      - "5000:5000"
     volumes:
-      - ./app:/app
+      - ./app:/app/app
+      - ./config.py:/app/config.py
+      - ./run.py:/app/run.py
+      - ./.flaskenv:/app/.flaskenv
     environment:
-      - ENVIRONMENT=development
-      - PYTHONPATH=/app
-      - PYTHONDONTWRITEBYTECODE=1  # No genera archivos .pyc
-      - PYTHONUNBUFFERED=1  # Output sin buffer
-    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      - FLASK_APP=run.py
+      - FLASK_ENV=development
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=1
+    command: flask run --host=0.0.0.0
     restart: unless-stopped

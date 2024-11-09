@@ -1,0 +1,38 @@
+{# app/templates/index.html #}
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="max-w-7xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+            ¡Bienvenido {% if user %}{{ user.username }}{% else %}Invitado{% endif %}!
+        </h1>
+        
+        <div class="mb-6">
+            <button hx-get="{{ url_for('main.load_more_posts') }}"
+                    hx-trigger="click"
+                    hx-target="#posts-container"
+                    hx-swap="beforeend"
+                    class="bg-indigo-600 dark:bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                Cargar más posts
+            </button>
+        </div>
+
+        <div id="posts-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for post in posts %}
+                <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden transition-colors duration-200">
+                    <div class="px-4 py-5 sm:p-6">
+                        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">{{ post.author }}</h3>
+                        <p class="text-gray-500 dark:text-gray-300">{{ post.body }}</p>
+                        <button hx-post="{{ url_for('main.like_post', post_id=loop.index) }}"
+                                hx-swap="outerHTML"
+                                class="mt-4 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-900">
+                            <span>Me gusta</span>
+                        </button>
+                    </div>
+                </div>
+            {% else %}
+                <p class="text-gray-500 dark:text-gray-400">No hay posts disponibles.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
